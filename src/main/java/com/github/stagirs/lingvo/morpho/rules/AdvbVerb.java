@@ -3,9 +3,7 @@ package com.github.stagirs.lingvo.morpho.rules;
 import com.github.stagirs.lingvo.morpho.MorphoAnalyst;
 import  com.github.stagirs.lingvo.morpho.model.*;
 
-public class AdvbVerb {
-    Form[] result;
-
+public class AdvbVerb implements Rule{
 
     public int getForm(String spl,int num) {
         String[] str = spl.split(" ");
@@ -14,7 +12,7 @@ public class AdvbVerb {
         Form[] raws;
         int count = MorphoAnalyst.predict(word).getNormsCount();
         Form[] forms = MorphoAnalyst.predict(word).getRaws();
-        if (count > 1) {
+        if (count > 1 && !word.equals("к") && !word.equals("после")) {
             for(int i = 0;i < count;i++) {
                 if (forms[i].getAttrs().get(0).toString().equals("ADVB")) {
                     if (num + 1 < str.length) {
@@ -34,7 +32,7 @@ public class AdvbVerb {
                             //fw6.write('\n');
                             //stop = false;
                             //down++;
-                            return count;
+                            return i;
                         }
                     }
                     if (num + 2 < str.length) {
@@ -42,7 +40,7 @@ public class AdvbVerb {
                         raws = MorphoAnalyst.predict(check).getRaws();
                         if (raws[0].getAttrs().get(0).toString().equals("VERB") || raws[0].getAttrs().get(0).toString().equals("INFN")) {
                             System.out.println(check + " " + word + " " + "ADVB");
-                            return count;
+                            return i;
                         }
                     }
                     if (num - 1 >= 0 ) {
@@ -50,7 +48,7 @@ public class AdvbVerb {
                         raws = MorphoAnalyst.predict(check).getRaws();
                         if (raws[0].getAttrs().get(0).toString().equals("VERB") || raws[0].getAttrs().get(0).toString().equals("INFN") || raws[0].getAttrs().get(0).toString().equals("ADJS")) {
                             System.out.println(check + " " + word + " " + "ADVB");
-                            return count;
+                            return i;
                         }
                     }
                     if (num - 2 >= 0 ) {
@@ -58,7 +56,7 @@ public class AdvbVerb {
                         raws = MorphoAnalyst.predict(check).getRaws();
                         if (raws[0].getAttrs().get(0).toString().equals("VERB") || raws[0].getAttrs().get(0).toString().equals("INFN")) {
                             System.out.println(check + " " + word + " " + "ADVB");
-                            return count;
+                            return i;
                         }
                     }
                 }

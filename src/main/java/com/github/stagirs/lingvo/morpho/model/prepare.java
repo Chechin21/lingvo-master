@@ -22,7 +22,7 @@ public class prepare {
     public static void main(String[] args) throws Exception {
         int count;
 
-        String word = "были";
+        String word = "а";
         count = MorphoAnalyst.predict(word).getNormCount();
         System.out.println(word + " " + count);
         Form[] k = MorphoAnalyst.predict(word).getRaws();
@@ -30,7 +30,7 @@ public class prepare {
         for (int i = 0; i < k.length; i++) {
             System.out.println(s[i] + " " + k[i].getAttrs().toString());
         }
-        word = "к";
+        word = "и";
         Form[] k1 = MorphoAnalyst.predict(word).getRaws();
         String[] s1 = MorphoAnalyst.predict(word).getNorms();
         for (int i = 0; i < k1.length; i++) {
