@@ -16,6 +16,7 @@ public class Checker {
         Form[] raws, forms;
         String a;
         int num;
+        int good=0,wrong=0;
         int down=0,tri = 0;
         String[] str;
         FileWriter fw1 = new FileWriter("/Users/ivan/Desktop/checker.txt");
@@ -41,9 +42,11 @@ public class Checker {
                         fw1.write(word + " " + forms[num].getAttrs().toString());
                         if (spl[tri].split(" ")[1].equals(forms[num].getAttrs().get(0).toString())) {
                             fw1.write(" good");
+                            good++;
                             //System.out.println("good");
                         } else {
                             fw1.write(" wrong");
+                            wrong++;
                             //System.out.println("wrong");
                         }
                         fw1.write('\n');
@@ -53,9 +56,11 @@ public class Checker {
                         fw1.write(word + " " + "PREP");
                         if (spl[tri].split(" ")[1].equals("PREP")) {
                             fw1.write(" good");
+                            good++;
                             //System.out.println("good");
                         } else {
                             fw1.write(" wrong");
+                            wrong++;
                             //System.out.println("wrong");
                         }
                         fw1.write('\n');
@@ -63,12 +68,22 @@ public class Checker {
                 }
             }
         }
-        return 0;
+        if(good>10 && good/wrong> 0.8){
+            return 1;
+        } else {
+            return 0;
+        }
     }
     public static void main(String[] args) throws Exception {
         Checker a = new Checker();
         AdvbVerb av = new AdvbVerb();
         NounAdjf na = new NounAdjf();
+        Conj c = new Conj();
+        InfVerb iv = new InfVerb();
+        AdjfNoun an = new AdjfNoun();
+        Prep p = new Prep();
+        PrepVerb pv = new PrepVerb();
+        Verbonly vo = new Verbonly();
         System.out.println(a.checkit(na));
     }
 }

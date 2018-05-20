@@ -22,7 +22,7 @@ public class prepare {
     public static void main(String[] args) throws Exception {
         int count;
 
-        String word = "а";
+        String word = "с";
         count = MorphoAnalyst.predict(word).getNormCount();
         System.out.println(word + " " + count);
         Form[] k = MorphoAnalyst.predict(word).getRaws();
@@ -110,5 +110,141 @@ public class prepare {
             e.printStackTrace();
         }
         fw.close();*/
+        /*
+        String source = "/Users/ivan/Downloads/annot.opcorpora.no_ambig_strict.xml";
+        FileWriter fw = new FileWriter("/Users/ivan/Desktop/sentencesforstat.txt");
+        try {
+            XMLStreamReader xmlr = XMLInputFactory.newInstance().createXMLStreamReader(source, new FileInputStream(source));
+            while (xmlr.hasNext()) {
+                xmlr.next();
+                if (xmlr.getEventType() == 1) {
+                    if (xmlr.getName().toString().equals("source")) {
+                        str = xmlr.getElementText();
+                        for(int i = 0;i < replacements.length;i++){
+                            str = str.replace(replacements[i],"");
+                        }
+                        str = str.replace("   "," ").replace("  "," ").trim();
+                        spl = str.split(" ");
+                        ok = true;
+                        if (spl.length < 3){
+                            ok = false;
+                        }
+                        if(spl.length >= 3) {
+                            for (int i = 0; i < spl.length; i++) {
+                                if (spl[i].toLowerCase().charAt(0) < 'а' || spl[i].toLowerCase().charAt(0) > 'я') {
+                                    ok = false;
+                                }
+                            }
+                            if (ok) {
+                                //System.out.println();
+                                fw.write("\n");
+                                //fw.write(str);
+                                //System.out.print(str);
+                            }
+                        }
+                        //System.out.println(str.replace("  "," "));
+
+                        //System.out.println(xmlr.getAttributeValue(1));
+                    }
+                }
+                if (ok) {
+                    if (xmlr.isStartElement() && xmlr.getName().toString() == "tfr") {
+                        word = xmlr.getAttributeValue(1).toLowerCase().replace('ё', 'е');
+                        //System.out.println(word);
+                        xmlr.next();
+                        xmlr.next();
+                        xmlr.next();
+                        tmp = false;
+                        if (xmlr.isStartElement() && xmlr.getName().toString() == "g") {
+                            for (int i = 0; i < check.length; i++) {
+                                if (xmlr.getAttributeValue(0).contains(check[i])) {
+                                    tmp = true;
+                                }
+                            }
+                        }
+                        if (tmp) {
+                            //if (MorphoAnalyst.predict(word).getNormsCount() > 1) {
+                                //System.out.print("   " + word + " " + xmlr.getAttributeValue(0));
+                            fw.write(word + " " + xmlr.getAttributeValue(0) + "\n");
+                            System.out.println(word + " " + xmlr.getAttributeValue(0));
+                            //}
+                        }
+                    }
+                }
+            }
+        }   catch (XMLStreamException | FactoryConfigurationError | IOException  e) {
+            e.printStackTrace();
+        }
+        fw.close();*/
+        String source = "/Users/ivan/Downloads/annot.opcorpora.no_ambig_strict.xml";
+        FileWriter fw = new FileWriter("/Users/ivan/Desktop/sentencesforstatfull.txt");
+        try {
+            XMLStreamReader xmlr = XMLInputFactory.newInstance().createXMLStreamReader(source, new FileInputStream(source));
+            while (xmlr.hasNext()) {
+                xmlr.next();
+                if (xmlr.getEventType() == 1) {
+                    if (xmlr.getName().toString().equals("source")) {
+                        str = xmlr.getElementText();
+                        for(int i = 0;i < replacements.length;i++){
+                            str = str.replace(replacements[i],"");
+                        }
+                        str = str.replace("   "," ").replace("  "," ").trim();
+                        spl = str.split(" ");
+                        ok = true;
+                        if (spl.length < 3){
+                            ok = false;
+                        }
+                        if(spl.length >= 3) {
+                            for (int i = 0; i < spl.length; i++) {
+                                if (spl[i].toLowerCase().charAt(0) < 'а' || spl[i].toLowerCase().charAt(0) > 'я') {
+                                    ok = false;
+                                }
+                            }
+                            if (ok) {
+                                //System.out.println();
+                                fw.write(" \n");
+                                //fw.write(str);
+                                //System.out.print(str);
+                            }
+                        }
+                        //System.out.println(str.replace("  "," "));
+
+                        //System.out.println(xmlr.getAttributeValue(1));
+                    }
+                }
+                if (ok) {
+                    if (xmlr.isStartElement() && xmlr.getName().toString() == "tfr") {
+                        word = xmlr.getAttributeValue(1).toLowerCase().replace('ё', 'е');
+                        //System.out.println(word);
+                        xmlr.next();
+                        xmlr.next();
+                        xmlr.next();
+                        tmp = false;
+                        if (xmlr.isStartElement() && xmlr.getName().toString() == "g") {
+                            for (int i = 0; i < check.length; i++) {
+                                if (xmlr.getAttributeValue(0).contains(check[i])) {
+                                    tmp = true;
+                                }
+                            }
+                        }
+                        if (tmp) {
+                            fw.write("  \n"+ word + " ");
+                            while(xmlr.isStartElement() && xmlr.getName().toString() == "g"){
+                                fw.write(xmlr.getAttributeValue(0) + ",");
+                                xmlr.next(); xmlr.next();
+                            }
+                            //if (MorphoAnalyst.predict(word).getNormsCount() > 1) {
+                            //System.out.print("   " + word + " " + xmlr.getAttributeValue(0));
+
+                            //System.out.println(word + " " + xmlr.getAttributeValue(0));
+                            //}
+                        }
+                    }
+                }
+            }
+        }   catch (XMLStreamException | FactoryConfigurationError | IOException  e) {
+            e.printStackTrace();
+        }
+        fw.close();
     }
 }

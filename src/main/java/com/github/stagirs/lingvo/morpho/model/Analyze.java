@@ -4,16 +4,18 @@ import com.github.stagirs.lingvo.morpho.MorphoAnalyst;
 
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Analyze {
     public static void main(String[] args) throws Exception {
         String a = "Мы стали прислушиваться";
-        FileReader fr = new FileReader("/Users/ivan/Desktop/test.txt");
+        FileReader fr = new FileReader("/Users/ivan/Desktop/sentences.txt");
         Scanner scan = new Scanner(fr);
-        String word, check;
+        String word, check,statcheck;
         String[] spl;
-        Form[] raws, forms;
+        Form[] raws, forms,rawn;
         int down=0,tri = 0;
         boolean stop = true;
         boolean verb = true;
@@ -26,6 +28,28 @@ public class Analyze {
         FileWriter fw6 = new FileWriter("/Users/ivan/Desktop/AdvbVerb.txt");
         FileWriter fw7 = new FileWriter("/Users/ivan/Desktop/Conj.txt");
         FileWriter fw8 = new FileWriter("/Users/ivan/Desktop/InfnVerb.txt");
+        FileWriter fw9 = new FileWriter("/Users/ivan/Desktop/Stats.txt");
+        FileWriter fw10 = new FileWriter("/Users/ivan/Desktop/Samespeech.txt");
+        /*
+        Map<String,String> comp = new LinkedHashMap<String,String>();
+        FileReader fr1 = new FileReader("/Users/ivan/Desktop/sentencesforstat.txt");
+        Scanner scanstat = new Scanner(fr1);
+        while(scanstat.hasNextLine()){
+            statcheck = scanstat.nextLine();
+            spl = statcheck.split(" ");
+            //System.out.println(spl[0]);
+            if (!statcheck.isEmpty()) {
+                System.out.println(spl[0]+ " " + spl[1]);
+                comp.put(spl[0], spl[1]);
+            } else{
+                comp.put(" "," ");
+            }
+        }
+        for (Map.Entry<String, String> entry : comp.entrySet())
+        {
+            System.out.println(entry.getKey() + "/" + entry.getValue());
+        }*/
+
         while (scan.hasNextLine()) {
 
             tri = 0;
@@ -466,7 +490,378 @@ public class Analyze {
                                 }
                             }
                         }
-
+                    }/*
+                    if (stop){
+                        if(j-1 >=0 && j+1 < str.length) {
+                            for (int i = 0; i < count; i++) {
+                                FileReader fr1 = new FileReader("/Users/ivan/Desktop/sentencesforstat.txt");
+                                Scanner scanstat = new Scanner(fr1);
+                                Scanner scanprev = new Scanner(fr1);
+                                Scanner scanpost = new Scanner(fr1);
+                                String stat, prev,next;
+                                String[] helper;
+                                Integer a1=0,a2=0,a3=0;
+                                check = str[j + 1];
+                                raws = MorphoAnalyst.predict(check).getRaws();
+                                scanstat.next();
+                                while (scanstat.hasNextLine()) {
+                                    helper = scanprev.nextLine().split(" ");
+                                    if (!helper[0].isEmpty()){
+                                        prev = helper[1];
+                                    } else {
+                                        prev = "";
+                                    }
+                                    helper = scanstat.nextLine().split(" ");
+                                    stat = helper[0];
+                                    if (!stat.isEmpty()) {
+                                        if (word.equals(stat) && helper[1].equals(forms[i].getAttrs().get(0).toString())) {
+                                            next = scanstat.nextLine();
+                                            if (!next.isEmpty()){
+                                                if (next.split(" ")[1].equals(raws[0].getAttrs().get(0).toString())){
+                                                    a1++;
+                                                }
+                                            }
+                                            if (!prev.isEmpty()){
+                                                check = str[j - 1];
+                                                raws = MorphoAnalyst.predict(check).getRaws();
+                                                if (prev.equals(raws[0].getAttrs().get(0).toString())){
+                                                    a1++;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }*/
+                    if(forms[0].getAttrs().get(0).equals(forms[1].getAttrs().get(0))){
+                        stop = false;
+                        String[] helper;
+                        String casee;
+                        int[] a1=new int[count];
+                        for (int i = 0; i < count; i++) {
+                            a1[i]=0;
+                        }
+                        fw10.write(a + "\n" + word + " " + forms[0].getAttrs() + " " +  MorphoAnalyst.predict(word).getNorms()[0] + "\n" + word + " " + forms[1].getAttrs() + " " + MorphoAnalyst.predict(word).getNorms()[1] + "\n");
+                        if (j-1 >= 0){
+                            System.out.println("j-1>0");
+                            check = str[j - 1];
+                            raws = MorphoAnalyst.predict(check).getRaws();
+                            if (raws[0].getAttrs().get(0).toString().equals("PREP") || check.equals("к") || check.equals("в") || check.equals("с")){
+                                System.out.println("here");
+                                FileReader fr1 = new FileReader("/Users/ivan/Desktop/sentencesforstatfull.txt");
+                                Scanner scanstat = new Scanner(fr1);
+                                while (scanstat.hasNextLine()) {
+                                    if (scanstat.nextLine().split(" ")[0].equals(check)){
+                                        if(scanstat.hasNextLine()) {
+                                            helper = scanstat.nextLine().split(",");
+                                            casee = helper[helper.length-1];
+                                            System.out.println(casee);
+                                            for (int i = 0; i < count; i++) {
+                                                if(forms[i].getAttrs().toString().contains(casee)){
+                                                    a1[i]++;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                fr1.close();
+                            }
+                        }
+                        int max = a1[0],num=0;
+                        for (int i = 0; i < count; i++) {
+                            System.out.println(a1[i]);
+                            if (a1[i]>max){
+                                max = a1[i];
+                                num = i;
+                            }
+                        }
+                        fw10.write(forms[num].getAttrs() + " " + MorphoAnalyst.predict(word).getNorms()[0] + "\n");
+                    }
+                    if (stop){
+                        if(j-1 >=0 && j+1 < str.length) {
+                            stop = false;
+                            fw9.write(a + '\n');
+                            check = str[j + 1];
+                            rawn = MorphoAnalyst.predict(check).getRaws();
+                            check = str[j - 1];
+                            raws = MorphoAnalyst.predict(check).getRaws();
+                            int[] a1=new int[count];
+                            int[] a2=new int[count];
+                            for (int i = 0; i < count; i++) {
+                                String[] helper;
+                                FileReader fr1 = new FileReader("/Users/ivan/Desktop/sentencesforstat.txt");
+                                Scanner scanstat = new Scanner(fr1);
+                                a1[i]=0;
+                                a2[i]=0;
+                                while (scanstat.hasNextLine()) {
+                                    helper = scanstat.nextLine().split(" ");
+                                    if(helper[0].equals(word)){
+                                        if(helper[1].equals(forms[i].getAttrs().get(0).toString())){
+                                            a2[i]++;
+                                        }
+                                    }
+                                }
+                                fr1.close();
+                                fr1 = new FileReader("/Users/ivan/Desktop/sentencesforstat.txt");
+                                scanstat = new Scanner(fr1);
+                                while (scanstat.hasNextLine()) {
+                                    helper = scanstat.nextLine().split(" ");
+                                    if (!helper[0].isEmpty()) {
+                                        if(helper[1].equals(raws[0].getAttrs().get(0).toString())){
+                                            if(scanstat.hasNextLine()) {
+                                                helper = scanstat.nextLine().split(" ");
+                                                if (!helper[0].isEmpty()) {
+                                                    if (helper[1].equals(forms[i].getAttrs().get(0).toString())) {
+                                                        if(scanstat.hasNextLine()) {
+                                                            helper = scanstat.nextLine().split(" ");
+                                                            if (!helper[0].isEmpty()) {
+                                                                if (helper[1].equals(rawn[0].getAttrs().get(0).toString())) {
+                                                                    a1[i]++;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                fw9.write(word + " " + forms[i].getAttrs().get(0).toString() + " " + a2[i] + " " + a1[i] + "   ");
+                                if (i == count-1){
+                                    int max1,max2,num1=0,num2=0,prevmax2=0,numprev2=0;
+                                    max1 = a1[0];
+                                    max2 = a2[0];
+                                    for(int w=1;w<count;w++){
+                                        if (a1[w]>max1){
+                                            max1=a1[w];
+                                            num1 = w;
+                                        }
+                                        if (a2[w]>max2){
+                                            prevmax2 = max2;
+                                            max2=a2[w];
+                                            num2 = w;
+                                        }
+                                    }
+                                    if (num1 == num2){
+                                        if(spl[tri].split(" ")[1].equals(forms[num1].getAttrs().get(0).toString())){
+                                            fw9.write( "\n" + forms[num1].getAttrs().get(0).toString() + " good" + "\n");
+                                            System.out.println("good");
+                                        } else {
+                                            fw9.write( "\n" + forms[num1].getAttrs().get(0).toString() + " wrong" + "\n");
+                                            System.out.println("wrong");
+                                        }
+                                    } else if(max2 - prevmax2 > 5){
+                                        if(spl[tri].split(" ")[1].equals(forms[num2].getAttrs().get(0).toString())){
+                                            fw9.write( "\n" + forms[num2].getAttrs().get(0).toString() + " good" + "\n");
+                                            System.out.println("good");
+                                        } else {
+                                            fw9.write( "\n" + forms[num2].getAttrs().get(0).toString() + " wrong" + "\n");
+                                            System.out.println("wrong");
+                                        }
+                                    } else {
+                                        if(spl[tri].split(" ")[1].equals(forms[num1].getAttrs().get(0).toString())){
+                                            fw9.write( "\n" + forms[num1].getAttrs().get(0).toString() + " good" + "\n");
+                                            System.out.println("good");
+                                        } else {
+                                            fw9.write( "\n" + forms[num1].getAttrs().get(0).toString() + " wrong" + "\n");
+                                            System.out.println("wrong");
+                                        }
+                                    }
+                                }
+                                fr1.close();
+                            }
+                        }
+                    }
+                    if (stop){
+                        if(j-1 >=0 && j-2 >= 0) {
+                            stop = false;
+                            fw9.write(a + '\n');
+                            check = str[j - 1];
+                            rawn = MorphoAnalyst.predict(check).getRaws();
+                            check = str[j - 2];
+                            raws = MorphoAnalyst.predict(check).getRaws();
+                            int[] a1=new int[count];
+                            int[] a2=new int[count];
+                            for (int i = 0; i < count; i++) {
+                                String[] helper;
+                                FileReader fr1 = new FileReader("/Users/ivan/Desktop/sentencesforstat.txt");
+                                Scanner scanstat = new Scanner(fr1);
+                                a1[i]=0;
+                                a2[i]=0;
+                                while (scanstat.hasNextLine()) {
+                                    helper = scanstat.nextLine().split(" ");
+                                    if(helper[0].equals(word)){
+                                        if(helper[1].equals(forms[i].getAttrs().get(0).toString())){
+                                            a2[i]++;
+                                        }
+                                    }
+                                }
+                                fr1.close();
+                                fr1 = new FileReader("/Users/ivan/Desktop/sentencesforstat.txt");
+                                scanstat = new Scanner(fr1);
+                                while (scanstat.hasNextLine()) {
+                                    helper = scanstat.nextLine().split(" ");
+                                    if (!helper[0].isEmpty()) {
+                                        if(helper[1].equals(raws[0].getAttrs().get(0).toString())){
+                                            if(scanstat.hasNextLine()) {
+                                                helper = scanstat.nextLine().split(" ");
+                                                if (!helper[0].isEmpty()) {
+                                                    if (helper[1].equals(rawn[0].getAttrs().get(0).toString())) {
+                                                        if(scanstat.hasNextLine()) {
+                                                            helper = scanstat.nextLine().split(" ");
+                                                            if (!helper[0].isEmpty()) {
+                                                                if (helper[1].equals(forms[i].getAttrs().get(0).toString())) {
+                                                                    a1[i]++;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                fw9.write(word + " " + forms[i].getAttrs().get(0).toString() + " " + a2[i] + " " + a1[i] + "   ");
+                                if (i == count-1){
+                                    int max1,max2,num1=0,num2=0,prevmax2=0,numprev2=0;
+                                    max1 = a1[0];
+                                    max2 = a2[0];
+                                    for(int w=1;w<count;w++){
+                                        if (a1[w]>max1){
+                                            max1=a1[w];
+                                            num1 = w;
+                                        }
+                                        if (a2[w]>max2){
+                                            prevmax2 = max2;
+                                            max2=a2[w];
+                                            num2 = w;
+                                        }
+                                    }
+                                    if (num1 == num2){
+                                        if(spl[tri].split(" ")[1].equals(forms[num1].getAttrs().get(0).toString())){
+                                            fw9.write( "\n" + " good" + "\n");
+                                            System.out.println("good");
+                                        } else {
+                                            fw9.write( "\n" + " good" + "\n");
+                                            System.out.println("wrong");
+                                        }
+                                    } else if(max2 - prevmax2 > 5){
+                                        if(spl[tri].split(" ")[1].equals(forms[num2].getAttrs().get(0).toString())){
+                                            fw9.write( "\n" + " good" + "\n");
+                                            System.out.println("good");
+                                        } else {
+                                            fw9.write( "\n" + " good" + "\n");
+                                            System.out.println("wrong");
+                                        }
+                                    } else {
+                                        if(spl[tri].split(" ")[1].equals(forms[num1].getAttrs().get(0).toString())){
+                                            fw9.write( "\n" + " good" + "\n");
+                                            System.out.println("good");
+                                        } else {
+                                            fw9.write( "\n" + " good" + "\n");
+                                            System.out.println("wrong");
+                                        }
+                                    }
+                                }
+                                fr1.close();
+                            }
+                        }
+                    }
+                    if (stop){
+                        if(j+2 < str.length && j+1 < str.length) {
+                            stop = false;
+                            fw9.write(a + '\n');
+                            check = str[j + 2];
+                            rawn = MorphoAnalyst.predict(check).getRaws();
+                            check = str[j + 1];
+                            raws = MorphoAnalyst.predict(check).getRaws();
+                            int[] a1=new int[count];
+                            int[] a2=new int[count];
+                            for (int i = 0; i < count; i++) {
+                                String[] helper;
+                                FileReader fr1 = new FileReader("/Users/ivan/Desktop/sentencesforstat.txt");
+                                Scanner scanstat = new Scanner(fr1);
+                                a1[i]=0;
+                                a2[i]=0;
+                                while (scanstat.hasNextLine()) {
+                                    helper = scanstat.nextLine().split(" ");
+                                    if(helper[0].equals(word)){
+                                        if(helper[1].equals(forms[i].getAttrs().get(0).toString())){
+                                            a2[i]++;
+                                        }
+                                    }
+                                }
+                                fr1.close();
+                                fr1 = new FileReader("/Users/ivan/Desktop/sentencesforstat.txt");
+                                scanstat = new Scanner(fr1);
+                                while (scanstat.hasNextLine()) {
+                                    helper = scanstat.nextLine().split(" ");
+                                    if (!helper[0].isEmpty()) {
+                                        if(helper[1].equals(forms[i].getAttrs().get(0).toString())){
+                                            if(scanstat.hasNextLine()) {
+                                                helper = scanstat.nextLine().split(" ");
+                                                if (!helper[0].isEmpty()) {
+                                                    if (helper[1].equals(raws[0].getAttrs().get(0).toString())) {
+                                                        if(scanstat.hasNextLine()) {
+                                                            helper = scanstat.nextLine().split(" ");
+                                                            if (!helper[0].isEmpty()) {
+                                                                if (helper[1].equals(rawn[0].getAttrs().get(0).toString())) {
+                                                                    a1[i]++;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                fw9.write(word + " " + forms[i].getAttrs().get(0).toString() + " " + a2[i] + " " + a1[i] + "   ");
+                                if (i == count-1){
+                                    int max1,max2,num1=0,num2=0,prevmax2=0,numprev2=0;
+                                    max1 = a1[0];
+                                    max2 = a2[0];
+                                    for(int w=1;w<count;w++){
+                                        if (a1[w]>max1){
+                                            max1=a1[w];
+                                            num1 = w;
+                                        }
+                                        if (a2[w]>max2){
+                                            prevmax2 = max2;
+                                            max2=a2[w];
+                                            num2 = w;
+                                        }
+                                    }
+                                    if (num1 == num2){
+                                        if(spl[tri].split(" ")[1].equals(forms[num1].getAttrs().get(0).toString())){
+                                            fw9.write( "\n" + " good" + "\n");
+                                            System.out.println("good");
+                                        } else {
+                                            fw9.write( "\n" + " good" + "\n");
+                                            System.out.println("wrong");
+                                        }
+                                    } else if(max2 - prevmax2 > 5){
+                                        if(spl[tri].split(" ")[1].equals(forms[num2].getAttrs().get(0).toString())){
+                                            fw9.write( "\n" + " good" + "\n");
+                                            System.out.println("good");
+                                        } else {
+                                            fw9.write( "\n" + " good" + "\n");
+                                            System.out.println("wrong");
+                                        }
+                                    } else {
+                                        if(spl[tri].split(" ")[1].equals(forms[num1].getAttrs().get(0).toString())){
+                                            fw9.write( "\n" + " good" + "\n");
+                                            System.out.println("good");
+                                        } else {
+                                            fw9.write( "\n" + " good" + "\n");
+                                            System.out.println("wrong");
+                                        }
+                                    }
+                                }
+                                fr1.close();
+                            }
+                        }
                     }
                 }
             }
@@ -481,5 +876,7 @@ public class Analyze {
         fw6.close();
         fw7.close();
         fw8.close();
+        fw9.close();
+        fw10.close();
     }
 }
