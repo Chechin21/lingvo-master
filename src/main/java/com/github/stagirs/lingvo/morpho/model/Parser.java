@@ -20,8 +20,8 @@ public class Parser {
             count = MorphoAnalyst.predict(word).getNormsCount();
             forms = MorphoAnalyst.predict(word).getRaws();
             norms = MorphoAnalyst.predict(word).getNorms();
-            if (word.equals("к") || word.equals("в")){
-                System.out.println(word + " " + norms[0] + " " + "PREP" );
+            if (word.equals("к") || word.equals("в") || word.equals("с")){
+                System.out.println(word + " " + norms[0] + " " + "[PREP]" );
                 continue;
             }
             if (count > 1) {
@@ -88,6 +88,6 @@ public class Parser {
     }
     public static void main(String[] args) throws Exception {
         Parser a = new Parser();
-        a.parse("в новом сезоне");
+        a.parse("в нашей стране");
     }
 }

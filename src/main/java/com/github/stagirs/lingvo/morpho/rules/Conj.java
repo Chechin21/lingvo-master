@@ -15,7 +15,7 @@ public class Conj {
         if (count > 1) {
             for (int i = 0; i < count; i++) {
                 if (forms[i].getAttrs().get(0).toString().equals("CONJ") && num == 0) {
-                    System.out.println(word + " " + "CONJ");
+                    //System.out.println(word + " " + "CONJ");
                     return i;
                 }
             }

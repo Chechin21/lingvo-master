@@ -18,7 +18,7 @@ public class AdjfNoun {
                         check = str[num + 1];
                         raws = MorphoAnalyst.predict(check).getRaws();
                         if (forms[i].intersect(raws[0]) >= 3 && raws[0].getAttrs().get(0).toString().equals("ADJF")) {
-                            System.out.println(word + " " + check + " " + "NOUN");
+                            //System.out.println(word + " " + check + " " + "NOUN");
                             return i;
                         }
                     }
@@ -26,7 +26,7 @@ public class AdjfNoun {
                         check = str[num - 1];
                         raws = MorphoAnalyst.predict(check).getRaws();
                         if (forms[i].intersect(raws[0]) >= 3 && raws[0].getAttrs().get(0).toString().equals("ADJF")) {
-                            System.out.println(check + " " + word + " " + "NOUN");
+                            //System.out.println(check + " " + word + " " + "NOUN");
                             return i;
                         }
                     }
@@ -34,7 +34,7 @@ public class AdjfNoun {
                         check = str[num + 2];
                         raws = MorphoAnalyst.predict(check).getRaws();
                         if (forms[i].intersect(raws[0]) >= 3 && raws[0].getAttrs().get(0).toString().equals("ADJF")) {
-                            System.out.println(word + " " + check + " " + "NOUN");
+                            //System.out.println(word + " " + check + " " + "NOUN");
                             return i;
                         }
                     }
@@ -42,7 +42,7 @@ public class AdjfNoun {
                         check = str[num - 2];
                         raws = MorphoAnalyst.predict(check).getRaws();
                         if (forms[i].intersect(raws[0]) >= 3 && raws[0].getAttrs().get(0).toString().equals("ADJF")) {
-                            System.out.println(check + " " + word + " " + "NOUN");
+                            //System.out.println(check + " " + word + " " + "NOUN");
                             return i;
                         }
                     }

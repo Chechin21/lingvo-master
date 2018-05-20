@@ -14,7 +14,7 @@ public class Prep {
         if (count > 1) {
             for (int i = 0; i < count; i++) {
                 if (forms[i].getAttrs().get(0).toString().equals("PREP") || word.equals("к") || word.equals("в") || word.equals("с")) {
-                    System.out.println(word + " " + "PREP");
+                    //System.out.println(word + " " + "PREP");
                     return -2;
                 }
             }

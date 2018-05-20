@@ -19,7 +19,7 @@ public class NounAdjf implements Rule {
                         check = str[num + 1];
                         raws = MorphoAnalyst.predict(check).getRaws();
                         if (forms[i].intersect(raws[0]) >= 3 && raws[0].getAttrs().get(0).toString().equals("NOUN")) {
-                            System.out.println(word + " " + check + " " + "ADFJ");
+                            //System.out.println(word + " " + check + " " + "ADFJ");
                             return i;
                         }
                     }
@@ -27,7 +27,7 @@ public class NounAdjf implements Rule {
                         check = str[num - 1];
                         raws = MorphoAnalyst.predict(check).getRaws();
                         if (forms[i].intersect(raws[0]) >= 3 && raws[0].getAttrs().get(0).toString().equals("NOUN")) {
-                            System.out.println(check + " " + word + " " + "ADFJ");
+                            //System.out.println(check + " " + word + " " + "ADFJ");
                             return i;
                         }
                     }
@@ -35,7 +35,7 @@ public class NounAdjf implements Rule {
                         check = str[num + 2];
                         raws = MorphoAnalyst.predict(check).getRaws();
                         if (forms[i].intersect(raws[0]) >= 3 && raws[0].getAttrs().get(0).toString().equals("NOUN")) {
-                            System.out.println(word + " " + check + " " + "ADFJ");
+                            //System.out.println(word + " " + check + " " + "ADFJ");
                             return i;
                         }
                     }
@@ -43,7 +43,7 @@ public class NounAdjf implements Rule {
                         check = str[num - 2];
                         raws = MorphoAnalyst.predict(check).getRaws();
                         if (forms[i].intersect(raws[0]) >= 3 && raws[0].getAttrs().get(0).toString().equals("NOUN")) {
-                            System.out.println(check + " " + word + " " + "ADFJ");
+                            //System.out.println(check + " " + word + " " + "ADFJ");
                             return i;
                         }
                     }

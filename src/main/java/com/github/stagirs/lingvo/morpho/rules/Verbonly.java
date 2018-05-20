@@ -25,7 +25,7 @@ public class Verbonly {
                         }
                     }
                     if (verb) {
-                        System.out.println(word + " " + forms[i].getAttrs().get(0).toString());
+                        //System.out.println(word + " " + forms[i].getAttrs().get(0).toString());
                         return i;
                     }
                 }

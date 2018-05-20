@@ -18,7 +18,7 @@ public class InfVerb {
                         check = str[ num + 1];
                         raws = MorphoAnalyst.predict(check).getRaws();
                         if (raws[0].getAttrs().get(0).toString().equals("VERB") || raws[0].getAttrs().get(0).toString().equals("INFN") || raws[0].getAttrs().get(0).toString().equals("AD numS")) {
-                            System.out.println(check + " " + word + " " + "INFN");
+                            //System.out.println(check + " " + word + " " + "INFN");
                             return i;
                         }
                     }
@@ -26,7 +26,7 @@ public class InfVerb {
                         check = str[ num - 1];
                         raws = MorphoAnalyst.predict(check).getRaws();
                         if (raws[0].getAttrs().get(0).toString().equals("VERB") || raws[0].getAttrs().get(0).toString().equals("INFN") || raws[0].getAttrs().get(0).toString().equals("AD numS")) {
-                            System.out.println(check + " " + word + " " + "INFN");
+                            //System.out.println(check + " " + word + " " + "INFN");
                             return i;
                         }
                     }
@@ -36,7 +36,7 @@ public class InfVerb {
                         check = str[ num + 1];
                         raws = MorphoAnalyst.predict(check).getRaws();
                         if (raws[0].getAttrs().get(0).toString().equals("INFN")) {
-                            System.out.println(check + " " + word + " " + "VERB");
+                           // System.out.println(check + " " + word + " " + "VERB");
                             return i;
                         }
                     }
@@ -44,7 +44,7 @@ public class InfVerb {
                         check = str[ num - 1];
                         raws = MorphoAnalyst.predict(check).getRaws();
                         if (raws[0].getAttrs().get(0).toString().equals("INFN")) {
-                            System.out.println(check + " " + word + " " + "VERB");
+                            //System.out.println(check + " " + word + " " + "VERB");
                             return i;
                         }
                     }
