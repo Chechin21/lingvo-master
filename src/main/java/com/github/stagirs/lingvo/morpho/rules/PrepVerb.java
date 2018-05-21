@@ -1,9 +1,18 @@
 package com.github.stagirs.lingvo.morpho.rules;
-
+/**
+ Класс, проверяющий, есть ли согласованность предлога с глаголом(после предлога глагол не может стоять)
+ @author ivan
+ */
 import com.github.stagirs.lingvo.morpho.MorphoAnalyst;
 import com.github.stagirs.lingvo.morpho.model.Form;
 
 public class PrepVerb {
+    /**
+     * Метод, проверяющий, является ли одной из форм омонима глагол, и проверяющий, не стоит ли этот омоним после предлога
+     * @param spl - предложение
+     * @param num - номер слова, которое имеет более чем 1 нормальную форму
+     * @return int - номер корректной граммемы, если она определена, -1 в ином случае
+     */
     public int getForm(String spl, int num) {
         String[] str = spl.split(" ");
         String word = str[num].toLowerCase();

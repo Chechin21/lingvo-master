@@ -2,9 +2,17 @@ package com.github.stagirs.lingvo.morpho.rules;
 
 import com.github.stagirs.lingvo.morpho.MorphoAnalyst;
 import  com.github.stagirs.lingvo.morpho.model.*;
-
+/**
+Класс, проверяющий, есть ли согласованность наречия с глаголом
+ @author ivan
+*/
 public class AdvbVerb implements Rule{
-
+    /**
+     * Метод, проверяющий, является ли одной из форм омонима наречие, и определяющий, находится ли в окрестности этого наречия глагол, к которому оно относится
+     * @param spl - предложение
+     * @param num - номер слова, которое имеет более чем 1 нормальную форму
+     * @return int - номер корректной граммемы, если она определена, -1 в ином случае
+     */
     public int getForm(String spl,int num) {
         String[] str = spl.split(" ");
         String word = str[num].toLowerCase();

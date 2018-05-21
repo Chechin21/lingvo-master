@@ -6,8 +6,17 @@ import com.github.stagirs.lingvo.morpho.model.Form;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Scanner;
-
+/**
+ Класс, проверяющий правила
+ @author ivan
+ */
 public class Checker {
+    /**
+     * Метод, проверяющий правило на размеченной выборке,в файл checker пишутся случаи, когда правило покрывает случай из тестовой выборки из файла test
+     * @param rule - на вход получает объект типа правило
+     * @return int - 1, если праивло корректно, 0 в другом случае
+     * @throws Exception
+     */
     public int checkit(Rule rule) throws Exception {
         FileReader fr = new FileReader("/Users/ivan/Desktop/test.txt");
         Scanner scan = new Scanner(fr);

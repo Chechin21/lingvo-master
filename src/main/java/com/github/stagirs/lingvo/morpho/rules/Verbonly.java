@@ -1,9 +1,18 @@
 package com.github.stagirs.lingvo.morpho.rules;
-
+/**
+ Класс, проверяющий, является ли глагол единтсвенным кандитатом на сказуемое в предложении
+ @author ivan
+ */
 import com.github.stagirs.lingvo.morpho.MorphoAnalyst;
 import com.github.stagirs.lingvo.morpho.model.Form;
 
 public class Verbonly {
+    /**
+     * Метод, проверяющий, является ли одной из форм омонима глагол(инфинитив), и определяющий, является ли он единтсвенным кандитатом на сказуемое в предложении
+     * @param spl - предложение
+     * @param num - номер слова, которое имеет более чем 1 нормальную форму
+     * @return int - номер корректной граммемы, если она определена, -1 в ином случае
+     */
     public int getForm(String spl, int num) {
         String[] str = spl.split(" ");
         String word = str[num].toLowerCase();

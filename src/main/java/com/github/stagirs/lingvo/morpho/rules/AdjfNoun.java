@@ -2,8 +2,17 @@ package com.github.stagirs.lingvo.morpho.rules;
 
 import com.github.stagirs.lingvo.morpho.MorphoAnalyst;
 import com.github.stagirs.lingvo.morpho.model.Form;
-
+/**
+ Класс, проверяющий, есть ли согласованность существительного с прилагательным
+ @author ivan
+ */
 public class AdjfNoun {
+    /**
+     * Метод, проверяющий, является ли одной из форм омонима существительное, и определяющий, находится ли в окрестности этого  существительного прилагательное, к которому оно относится(совпадают род число падеж)
+     * @param spl - предложение
+     * @param num - номер слова, которое имеет более чем 1 нормальную форму
+     * @return int - номер корректной граммемы, если она определена, -1 в ином случае
+     */
     public int getForm(String spl,int num) {
         String[] str = spl.split(" ");
         String word = str[num].toLowerCase();
